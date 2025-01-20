@@ -27,27 +27,31 @@ namespace GreenZones.Controllers
             {
                 var requestUser = HttpContext.User;
                 var user = new User();
-                if (requestUser.Identity.IsAuthenticated)
+                if (requestUser?.Identity?.IsAuthenticated == true)
                 {
                     var userId = requestUser.GetObjectId();
-                    user = _unitofWork.UserRepository.FindAsync(u => u.UserPrincipalName == userId).Result.FirstOrDefault();
-
-                    if (user == null)
+                    if (userId != null)
                     {
-                        _unitofWork.UserRepository.AddAsync(new User
-                        {
-                            UserPrincipalName = userId,
-                            DisplayName = requestUser.GetDisplayName(),
-                            CreatedBy = "System",
-                            CreatedDate = DateTime.Now,
-                            UpdatedBy = "System",
-                            UpdatedDate = DateTime.Now
-                        });
+                        user = _unitofWork.UserRepository.FindAsync(u => u.UserPrincipalName == userId).Result.FirstOrDefault();
 
-                        _unitofWork.Save();
+                        if (user == null)
+                        {
+                            user = new User
+                            {
+                                UserPrincipalName = userId,
+                                DisplayName = requestUser.GetDisplayName() ?? string.Empty,
+                                CreatedBy = "System",
+                                CreatedDate = DateTime.Now,
+                                UpdatedBy = "System",
+                                UpdatedDate = DateTime.Now
+                            };
+
+                            _unitofWork.UserRepository.AddAsync(user);
+                            _unitofWork.Save();
+                        }
                     }
-                }               
-                viewModel.display_name = user.DisplayName;
+                }
+                viewModel.display_name = user?.DisplayName ?? string.Empty;
             }
             catch (Exception ex)
             {
