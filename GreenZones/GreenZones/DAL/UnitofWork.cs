@@ -4,12 +4,11 @@ namespace GreenZones.DAL
 {
     public class UnitofWork : IUnitofWork
     {
-        private DbAll01ProdUswest001Context _context = new DbAll01ProdUswest001Context();
+        private DbAll01ProdUswest001Context _context;
 
-        public UnitofWork(DbAll01ProdUswest001Context context, bool disposed)
+        public UnitofWork(DbAll01ProdUswest001Context context)
         {
             _context = context;
-            this.disposed = disposed;
         }
 
         public IRepository<User> UserRepository => new Repository<User>(_context);
