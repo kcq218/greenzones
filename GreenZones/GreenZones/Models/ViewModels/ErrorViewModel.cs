@@ -1,4 +1,4 @@
-namespace GreenZones.Models
+namespace GreenZones.Models.ViewModels
 {
     public class ErrorViewModel
     {

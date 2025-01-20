@@ -1,7 +1,9 @@
-using Microsoft.AspNetCore.Authentication;
+using GreenZones.DAL;
+using GreenZones.Models;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
@@ -20,6 +22,13 @@ builder.Services.AddControllersWithViews(options =>
 });
 builder.Services.AddRazorPages()
     .AddMicrosoftIdentityUI();
+
+var connectionString = builder.Configuration.GetConnectionString("GreenZonesContext");
+
+builder.Services.AddDbContext<DbAll01ProdUswest001Context>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 
 var app = builder.Build();
 
