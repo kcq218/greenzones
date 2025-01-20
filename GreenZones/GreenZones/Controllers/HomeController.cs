@@ -25,11 +25,11 @@ namespace GreenZones.Controllers
             var viewModel = new IndexViewModel();
             try
             {
-                var request = HttpContext.User;
+                var requestUser = HttpContext.User;
                 var user = new User();
-                if (request.Identity.IsAuthenticated)
+                if (requestUser.Identity.IsAuthenticated)
                 {
-                    var userId = request.GetObjectId();
+                    var userId = requestUser.GetObjectId();
                     user = _unitofWork.UserRepository.FindAsync(u => u.UserPrincipalName == userId).Result.FirstOrDefault();
 
                     if (user == null)
@@ -37,11 +37,10 @@ namespace GreenZones.Controllers
                         _unitofWork.UserRepository.AddAsync(new User
                         {
                             UserPrincipalName = userId,
-                            DisplayName = request.GetDisplayName()
-                        ,
-                            CreatedBy = "droopy",
+                            DisplayName = requestUser.GetDisplayName(),
+                            CreatedBy = "System",
                             CreatedDate = DateTime.Now,
-                            UpdatedBy = "droopy",
+                            UpdatedBy = "System",
                             UpdatedDate = DateTime.Now
                         });
 

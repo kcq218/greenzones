@@ -23,10 +23,10 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddRazorPages()
     .AddMicrosoftIdentityUI();
 
-var connectionString = builder.Configuration.GetConnectionString("GreenZonesContext");
+builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Services.AddDbContext<DbAll01ProdUswest001Context>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GreenZonesContext")));
 
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 
