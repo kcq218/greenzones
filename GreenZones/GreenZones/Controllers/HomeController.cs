@@ -22,30 +22,40 @@ namespace GreenZones.Controllers
 
         public IActionResult Index()
         {
-            var request = HttpContext.User;
-            if (request.Identity.IsAuthenticated)
-            {
-                var userId = request.GetObjectId();
-                var user = _unitofWork.UserRepository.FindAsync(u => u.UserPrincipalName == userId).Result.FirstOrDefault();
-
-                if (user == null)
-                {
-                    _unitofWork.UserRepository.AddAsync(new User
-                    {
-                        UserPrincipalName = userId,
-                        DisplayName = request.GetDisplayName()
-                    ,
-                        CreatedBy = "droopy",
-                        CreatedDate = DateTime.Now,
-                        UpdatedBy = "droopy",
-                        UpdatedDate = DateTime.Now
-                    });
-
-                    _unitofWork.Save();
-                }
-            }
             var viewModel = new IndexViewModel();
-            viewModel.display_name = request.GetDisplayName();
+            try
+            {
+                var request = HttpContext.User;
+                var user = new User();
+                if (request.Identity.IsAuthenticated)
+                {
+                    var userId = request.GetObjectId();
+                    user = _unitofWork.UserRepository.FindAsync(u => u.UserPrincipalName == userId).Result.FirstOrDefault();
+
+                    if (user == null)
+                    {
+                        _unitofWork.UserRepository.AddAsync(new User
+                        {
+                            UserPrincipalName = userId,
+                            DisplayName = request.GetDisplayName()
+                        ,
+                            CreatedBy = "droopy",
+                            CreatedDate = DateTime.Now,
+                            UpdatedBy = "droopy",
+                            UpdatedDate = DateTime.Now
+                        });
+
+                        _unitofWork.Save();
+                    }
+                }               
+                viewModel.display_name = user.DisplayName;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in HomeController.Index");
+                TempData.Add("Error", ex.ToString());
+                return View("Error");
+            }
             return View(viewModel);
         }
 
