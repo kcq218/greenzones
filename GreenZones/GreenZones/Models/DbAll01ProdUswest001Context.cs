@@ -27,7 +27,9 @@ public partial class DbAll01ProdUswest001Context : DbContext
 
     public virtual DbSet<UserInfo> UserInfos { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){ }
+    // we are using base context so no longer needs this.
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){ 
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
