@@ -27,9 +27,8 @@ public partial class DbAll01ProdUswest001Context : DbContext
 
     public virtual DbSet<UserInfo> UserInfos { get; set; }
 
-    // we are using base context so no longer needs this.
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){ 
-    //}
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{ }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -82,11 +81,17 @@ public partial class DbAll01ProdUswest001Context : DbContext
                 .IsUnicode(false)
                 .HasColumnName("updated_by");
             entity.Property(e => e.UpdatedDate).HasColumnName("updated_date");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.ShotType).WithMany(p => p.Sessions)
                 .HasForeignKey(d => d.ShotTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_session_shot_type");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Sessions)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_session_Users");
         });
 
         modelBuilder.Entity<ShotType>(entity =>
@@ -107,6 +112,12 @@ public partial class DbAll01ProdUswest001Context : DbContext
                 .IsUnicode(false)
                 .HasColumnName("updated_by");
             entity.Property(e => e.UpdatedDate).HasColumnName("updated_date");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.User).WithMany(p => p.ShotTypes)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_shot_type_Users");
         });
 
         modelBuilder.Entity<UrlMapping>(entity =>

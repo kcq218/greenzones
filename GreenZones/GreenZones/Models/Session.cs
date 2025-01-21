@@ -7,6 +7,8 @@ public partial class Session
 {
     public int Id { get; set; }
 
+    public int UserId { get; set; }
+
     public int ShotTypeId { get; set; }
 
     public int Makes { get; set; }
@@ -24,4 +26,6 @@ public partial class Session
     public string UpdatedBy { get; set; } = null!;
 
     public virtual ShotType ShotType { get; set; } = null!;
+
+    public virtual User User { get; set; } = null!;
 }

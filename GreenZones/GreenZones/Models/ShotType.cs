@@ -7,6 +7,8 @@ public partial class ShotType
 {
     public int Id { get; set; }
 
+    public int UserId { get; set; }
+
     public string Name { get; set; } = null!;
 
     public DateTime CreatedDate { get; set; }
@@ -18,4 +20,6 @@ public partial class ShotType
     public string UpdatedBy { get; set; } = null!;
 
     public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
+
+    public virtual User User { get; set; } = null!;
 }

@@ -1,0 +1,46 @@
+﻿@model GreenZones.Models.ViewModels.ShotTypeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Shot Locations </h1>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="text-start">
+                    <button type="button" class="btn btn-success btn-md" onclick="location.href='@Url.Action("AddShotType", "Home")'">Add Shot location</button>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col">
+                <table class="table table-sm table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Location Name</th>
+                            <th scope="col">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var shotType in Model.ShotTypes)
+                        {
+                            <tr>
+                                <th scope="row">@shotType.Id</th>
+                                <td>@shotType.Name</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+</div>
