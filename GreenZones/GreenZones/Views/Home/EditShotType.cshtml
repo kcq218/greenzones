@@ -1,0 +1,32 @@
+﻿@model GreenZones.Models.ViewModels.EditShotTypeViewModel
+@{
+    ViewData["Title"] = "Add Shot Location";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add Shot Location</h1>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col text-start">
+                @using (Html.BeginForm("EditShotType", "Home", FormMethod.Post))
+                {
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.ShotType, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.ShotType, new { @class="form-control" })
+                        @Html.ValidationMessageFor(m => m.ShotType, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(m => m.UserId)
+                        @Html.HiddenFor(m => m.ShotTypeId)
+                        @Html.HiddenFor(m => m.DisplayName)
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                }
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
