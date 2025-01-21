@@ -10,7 +10,6 @@ public partial class Session
     public int UserId { get; set; }
 
     public int ShotTypeId { get; set; }
-
     public int Makes { get; set; }
 
     public int TotalShots { get; set; }

@@ -7,7 +7,7 @@ namespace GreenZones.Services
     public class UserService : IUserService
     {
         private readonly IUnitofWork _unitofWork;
-        private IHttpContextAccessor _httpContextAccessor;
+        private IHttpContextAccessor? _httpContextAccessor;
         public UserService(IUnitofWork unitofWork)
         {
             _unitofWork = unitofWork;
@@ -16,10 +16,10 @@ namespace GreenZones.Services
         public Task<User> AddUser(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            var userId = _httpContextAccessor.HttpContext.User.GetObjectId();
-            var userDisplayName = _httpContextAccessor.HttpContext.User.GetDisplayName();
+            var userId = _httpContextAccessor.HttpContext?.User.GetObjectId();
+            var userDisplayName = _httpContextAccessor.HttpContext?.User.GetDisplayName();
 
-            var user = new Models.User
+            var user = new User
             {
                 UserPrincipalName = userId,
                 DisplayName = userDisplayName,

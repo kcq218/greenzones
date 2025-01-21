@@ -1,0 +1,47 @@
+﻿@model GreenZones.Models.ViewModels.AddSessionViewModel
+@{
+    ViewData["Title"] = "Add Shot Session";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add Shot Location</h1>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col text-start">
+                @using (Html.BeginForm("AddSession", "Home", FormMethod.Post))
+                {
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.Makes, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Makes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Makes,"", new { @class = "text-danger" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.TotalShot, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.TotalShot, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.TotalShot, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.Streak, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Streak, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Streak, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div class="mb-3">
+                        @Html.DropDownListFor(x => Model.ShotTypeId, new SelectList(Model.ShotTypes, "Value", "Text"), htmlAttributes: new { @class = "form-control"})
+                        @Html.ValidationMessageFor(x => x.ShotTypeId, "", new { @class = "text-danger" })
+                    </div>
+                    @Html.HiddenFor(m => m.UserId)
+                    @Html.HiddenFor(m => m.DisplayName)
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                }
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
