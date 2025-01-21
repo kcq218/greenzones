@@ -4,7 +4,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome @Model.Display_name </h1>
+    <h1 class="display-4">Welcome To GreenZones </h1>
     <hr />
     <div class="container">
         <div class="row">
@@ -12,9 +12,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Shot Percentage</h2>
-                        <h4>25%</h4>
+                        <h4>@Model.Total_Shot_Percentage %</h4>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                            <div class="progress-bar" role="progressbar" style="width: @Model.Total_Shot_Percentage%" aria-valuenow="@Model.Total_Shot_Percentage" aria-valuemin="0" aria-valuemax="100">@Model.Total_Shot_Percentage %</div>
                         </div>
                     </div>
                 </div>
@@ -23,9 +23,9 @@
                 <div class="card" ">
                     <div class="card-body">
                         <h2 class="card-title">Shots Made</h2>
-                        <h4>0</h4>
+                        <h4>@Model.Total_Shot_Made</h4>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                            <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
                         </div>
                     </div>
                 </div>
@@ -34,9 +34,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Longest Streak</h2>
-                        <h4>0</h4>
+                        <h4>@Model.longest_streak</h4>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                            <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
                         </div>
                     </div>
                 </div>
@@ -46,14 +46,14 @@
         <div class="row">
             <div class="col">
                 <div class="text-start">
-                    <button type="button" class="btn btn-success btn-md">Add Session</button>
+                    <button type="button" class="btn btn-success btn-md" onclick="location.href='@Url.Action("AddSession", "Home")'">Add Session</button>
                 </div>
             </div>
         </div>
         <hr>
         <div class="row">
             <div class="col table-responsive">
-                <table class="table table-sm">
+                <table class="table table-sm table-bordered" id="sessionsTable">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -61,40 +61,34 @@
                             <th scope="col">Location</th>
                             <th scope="col">Made</th>
                             <th scope="col">Attempt</th>
+                            <th scope="col">Percentage</th>
                             <th scope="col">Streak</th>
                             <th scope="col">Edit</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>mdo</td>
-                            <td>mdo</td>
-                            <td>mdo</td>
-                            <td>
-                                <button type="button" class="btn btn-primary btn-sm">Edit</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>mdo</td>
-                            <td>mdo</td>
-                            <td>mdo</td>
-                            <td>mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>mdo</td>
-                            <td>mdo</td>
-                            <td>mdo</td>
-                            <td>mdo</td>
-                        </tr>
+                @foreach (var session in Model.Sessions)
+                {
+                    <tr>
+                        <th scope="row">@session.Id</th>
+                        <td>@session.CreatedDate.ToShortDateString()</td>
+                        <td>@session.ShotType.Name</td>
+                        <td>@session.Makes</td>
+                        <td>@session.TotalShots</td>
+                        @if (session.TotalShots > 0 && session.Makes > 0)
+                        {
+                            decimal percent = (Convert.ToDecimal(session.Makes) / session.TotalShots * 100);
+
+                            <td>@percent.ToString("00") %</td>
+                        }
+                        else
+                        {
+                                    <td>0</td>
+                        }
+                        <td>@session.Streak</td>
+                        <td><button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("EditSession", "Home", new { id = session.Id })'">Edit</button></td>
+                    </tr>
+                }
                     </tbody>
                 </table>
             </div>

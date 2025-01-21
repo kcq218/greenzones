@@ -14,6 +14,7 @@
                     <div class="mb-3">
                         @Html.LabelFor(m => m.ShotType, new { @class = "form-label" })
                         @Html.TextBoxFor(m => m.ShotType, new { @class="form-control" })
+                        @Html.ValidationMessageFor(m => m.ShotType, "", new { @class = "text-danger" })
                         @Html.HiddenFor(m => m.UserId)
                         @Html.HiddenFor(m => m.DisplayName)
                     </div>
@@ -24,3 +25,7 @@
         <hr />
     </div>
 </div>
+
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

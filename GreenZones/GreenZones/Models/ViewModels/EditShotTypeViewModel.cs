@@ -2,7 +2,9 @@ namespace GreenZones.Models.ViewModels
 {
     public class EditShotTypeViewModel
     {
-        public virtual User? User { get; set; }
-        public ShotType ShotType { get; set; }
+        public int UserId { get; set; }
+        public int ShotTypeId { get; set; }
+        public string? DisplayName { get; set; }
+        public string? ShotType { get; set; }
     }
 }

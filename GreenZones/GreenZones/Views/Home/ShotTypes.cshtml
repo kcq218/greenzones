@@ -1,6 +1,6 @@
 ﻿@model GreenZones.Models.ViewModels.ShotTypeViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Shot Locations";
 }
 
 <div class="text-center">
@@ -28,13 +28,13 @@
                     <tbody>
                         @foreach (var shotType in Model.ShotTypes)
                         {
-                            <tr>
-                                <th scope="row">@shotType.Id</th>
-                                <td>@shotType.Name</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary btn-sm">Edit</button>
-                                </td>
-                            </tr>
+                                    <tr>
+                                        <th scope="row">@shotType.Id</th>
+                                        <td>@shotType.Name</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                                        </td>
+                                    </tr>
                         }
                     </tbody>
                 </table>
@@ -42,5 +42,4 @@
         </div>
     </div>
     <hr>
-</div>
 </div>
