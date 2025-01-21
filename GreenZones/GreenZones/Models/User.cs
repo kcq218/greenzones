@@ -28,4 +28,8 @@ public partial class User
     public string CreatedBy { get; set; } = null!;
 
     public string UpdatedBy { get; set; } = null!;
+
+    public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
+
+    public virtual ICollection<ShotType> ShotTypes { get; set; } = new List<ShotType>();
 }

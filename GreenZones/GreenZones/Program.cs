@@ -1,5 +1,6 @@
 using GreenZones.DAL;
 using GreenZones.Models;
+using GreenZones.Services;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -29,6 +30,9 @@ builder.Services.AddDbContext<DbAll01ProdUswest001Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GreenZonesContext")));
 
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 
