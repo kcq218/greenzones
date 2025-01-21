@@ -3,9 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GreenZones.Models.ViewModels
 {
-    public class AddSessionViewModel
+    public class EditSessionViewModel
     {
         public int UserId { get; set; }
+        public int SessionId { get; set; }
 
         [Required(ErrorMessage = "Please enter a number.")]
         [Range(0, 999999)]

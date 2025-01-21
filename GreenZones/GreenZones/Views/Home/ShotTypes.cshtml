@@ -28,13 +28,13 @@
                     <tbody>
                         @foreach (var shotType in Model.ShotTypes)
                         {
-                                    <tr>
-                                        <th scope="row">@shotType.Id</th>
-                                        <td>@shotType.Name</td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary btn-sm">Edit</button>
-                                        </td>
-                                    </tr>
+                            <tr>
+                                <th scope="row">@shotType.Id</th>
+                                <td>@shotType.Name</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("EditShotType", "Home", new { id = shotType.Id })'">Edit</button>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>

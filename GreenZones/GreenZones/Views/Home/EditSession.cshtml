@@ -1,15 +1,15 @@
-﻿@model GreenZones.Models.ViewModels.AddSessionViewModel
+﻿@model GreenZones.Models.ViewModels.EditSessionViewModel
 @{
-    ViewData["Title"] = "Add Shot Session";
+    ViewData["Title"] = "Edit Shot Session";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Add Shot Session</h1>
+    <h1 class="display-4">Edit Shot Session</h1>
     <hr />
     <div class="container">
         <div class="row">
             <div class="col text-start">
-                @using (Html.BeginForm("AddSession", "Home", FormMethod.Post))
+                @using (Html.BeginForm("EditSession", "Home", FormMethod.Post))
                 {
                     <div class="mb-3">
                         @Html.LabelFor(m => m.Makes, new { @class = "form-label" })
@@ -34,6 +34,7 @@
                     </div>
                     @Html.HiddenFor(m => m.UserId)
                     @Html.HiddenFor(m => m.DisplayName)
+                    @Html.HiddenFor(m => m.SessionId)
                     <button type="submit" class="btn btn-primary">Submit</button>
                 }
             </div>

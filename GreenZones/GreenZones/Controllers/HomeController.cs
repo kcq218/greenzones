@@ -149,6 +149,61 @@ namespace GreenZones.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> EditShotType(int id)
+        {
+
+            var viewModel = new EditShotTypeViewModel();
+            var user = await _userService.GetUserByIdAsync(_httpContextAccessor);
+            var shotType = await _unitofWork.ShotTypeRepository.GetByIdAsync(id);
+
+            viewModel.UserId = user.Id;
+            viewModel.ShotTypeId = id;
+            viewModel.DisplayName = user.DisplayName;
+            viewModel.ShotType = shotType.Name;
+
+            try
+            {
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in HomeController.EditShotType");
+                TempData.Add("Error", ex.ToString());
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditShotType(EditShotTypeViewModel viewModel)
+        {
+            var vm = viewModel;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var shotType = await _unitofWork.ShotTypeRepository.GetByIdAsync(vm.ShotTypeId);
+                    shotType.Name = vm.ShotType;
+                    shotType.UpdatedDate = DateTime.Now;
+                    shotType.UpdatedBy = vm.DisplayName;
+
+                    _unitofWork.ShotTypeRepository.Update(shotType);
+                    _unitofWork.Save();
+                    return RedirectToAction("ShotTypes", "Home");
+
+                }
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in HomeController.EditShotType");
+                TempData.Add("Error", ex.ToString());
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
         public async Task<IActionResult> AddSession()
         {
 
@@ -166,7 +221,7 @@ namespace GreenZones.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in HomeController.AddShotType");
+                _logger.LogError(ex, "Error in HomeController.AddSession");
                 TempData.Add("Error", ex.ToString());
                 return View("Error");
             }
@@ -212,7 +267,80 @@ namespace GreenZones.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in HomeController.AddShotType");
+                _logger.LogError(ex, "Error in HomeController.AddSession");
+                TempData.Add("Error", ex.ToString());
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditSession(int id)
+        {
+
+            var viewModel = new EditSessionViewModel();
+            var session = await _unitofWork.SessionRepository.GetByIdAsync(id);
+            var User = await _userService.GetUserByIdAsync(_httpContextAccessor);
+            var shotTypes = await _unitofWork.ShotTypeRepository.GetAllAsync();
+
+            viewModel.SessionId = session.Id;
+            viewModel.ShotTypes = shotTypes.Where(m => m.UserId == User.Id).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Name });
+            viewModel.UserId = User.Id;
+            viewModel.DisplayName = User.DisplayName;
+            viewModel.Makes = session.Makes;
+            viewModel.ShotTypeId = session.ShotTypeId.ToString();
+            viewModel.Streak = session.Streak;
+            viewModel.TotalShot = session.TotalShots;
+
+            try
+            {
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in HomeController.EditSession");
+                TempData.Add("Error", ex.ToString());
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditSession(EditSessionViewModel viewModel)
+        {
+            var vm = viewModel;
+
+            try
+            {
+                if (vm.Makes > vm.TotalShot)
+                {
+                    ModelState.AddModelError("Makes", "Makes cannot be greater than Total Shots");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    var session = await _unitofWork.SessionRepository.GetByIdAsync(vm.SessionId);
+
+                    session.Makes = vm.Makes;
+                    session.ShotTypeId = Convert.ToInt32(vm.ShotTypeId);
+                    session.Streak = vm.Streak;
+                    session.TotalShots = vm.TotalShot;
+                    session.UpdatedDate = DateTime.Now;
+                    session.UpdatedBy = vm.DisplayName;
+
+
+                    _unitofWork.SessionRepository.Update(session);
+                    _unitofWork.Save();
+                    return RedirectToAction("Index", "Home");
+
+                }
+
+                var shotTypes = await _unitofWork.ShotTypeRepository.GetAllAsync();
+                vm.ShotTypes = shotTypes.Where(m => m.UserId == vm.UserId).Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Name });
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in HomeController.EditSession");
                 TempData.Add("Error", ex.ToString());
                 return View("Error");
             }
