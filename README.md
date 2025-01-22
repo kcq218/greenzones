@@ -29,3 +29,10 @@ uaw hiddenFor for fields that are needed but not in the form in razor pages
 Get better at Linq, or use include method if join is needed
 
 try to use IEnumerable to join tables.
+
+To Do List:
+
+Have percentage by month going back by a year
+
+Have filters to see specific sessions
+
